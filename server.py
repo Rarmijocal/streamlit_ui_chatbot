@@ -1,10 +1,6 @@
 import shelve
-import os
 import streamlit as st
-from dotenv import load_dotenv
 from vertexai import agent_engines
-
-load_dotenv()
 
 st.set_page_config(page_title="ADK Chatbot", page_icon="💬", layout="centered")
 
@@ -13,7 +9,7 @@ BOT_AVATAR = "🤖"
 DEFAULT_WELCOME_MESSAGE = "¡Hola! Soy tu asistente de IA. ¿En qué puedo ayudarte hoy?"
 
 try:
-    adk_app = agent_engines.get(os.environ.get("DEPLOY_NAME"))
+    adk_app = agent_engines.get(st.secrets["DEPLOY_NAME"])
 except Exception as e:
     st.error(f"Error al cargar el agente IA. Asegúrate de que DEPLOY_NAME esté configurado correctamente. Detalles: {e}")
     st.stop()
