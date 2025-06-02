@@ -1,1 +1,3 @@
+google-cloud-aiplatform
 vertexai==1.71.1
+streamlit
