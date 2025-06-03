@@ -1,2 +1,4 @@
+google-cloud-aiplatform[adk,agent-engines]
+google-adk
 vertexai
 streamlit
