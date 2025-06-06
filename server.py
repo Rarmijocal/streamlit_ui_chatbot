@@ -1,8 +1,10 @@
-import os
 import json
+import os
 import shelve
 import streamlit as st
 from vertexai import agent_engines
+
+from utils import get_json_credentials
 
 st.set_page_config(page_title="ADK Chatbot", page_icon="💬", layout="centered")
 
@@ -10,35 +12,14 @@ USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
 DEFAULT_WELCOME_MESSAGE = "¡Hola! Soy tu asistente de IA. ¿En qué puedo ayudarte hoy?"
 
-type = st.secrets["type"]
-project_id = st.secrets["project_id"]
-private_key_id = st.secrets["private_key_id"]
-private_key = st.secrets["private_key"]
-client_email = st.secrets["client_email"]
-client_id = st.secrets["client_id"]
-auth_uri = st.secrets["auth_uri"]
-token_uri = st.secrets["token_uri"]
-auth_provider_x509_cert_url = st.secrets["auth_provider_x509_cert_url"]
-client_x509_cert_url = st.secrets["client_x509_cert_url"]
-universe_domain = st.secrets["universe_domain"]
+with open("credenciales.json", 'w', encoding='utf-8') as f:
+    json.dump(get_json_credentials(), f, indent=4, ensure_ascii=False)
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json.dumps({
-  "type": type,
-  "project_id": project_id,
-  "private_key_id": private_key_id,
-  "private_key": private_key,
-  "client_email": client_email,
-  "client_id": client_id,
-  "auth_uri": auth_uri,
-  "token_uri": token_uri,
-  "auth_provider_x509_cert_url": auth_provider_x509_cert_url,
-  "client_x509_cert_url": client_x509_cert_url,
-  "universe_domain": universe_domain
-})
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credenciales.json"
 
 
 try:
-    adk_app = agent_engines.get(st.secrets["DEPLOY_NAME"])
+    adk_app = agent_engines.get(st.secrets["agent_id"])
 except Exception as e:
     st.error(f"Error al cargar el agente IA. Asegúrate de que DEPLOY_NAME esté configurado correctamente. Detalles: {e}")
     st.stop()
